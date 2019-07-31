@@ -9,9 +9,6 @@ import util.SparkUtils;
 
 /**
  * 日志分析.
- *
- * @author zhaona
- * @create 2018/7/31 下午4:04
  */
 public class LogsAnalysis {
 

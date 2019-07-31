@@ -11,9 +11,6 @@ import java.util.Arrays;
 
 /**
  * 单词计数器.
- *
- * @author zhaona
- * @create 2018/7/18 下午2:15
  */
 public class WordCount {
 

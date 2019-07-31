@@ -21,9 +21,6 @@ import java.util.List;
 
 /**
  * RDD互相转换.
- *
- * @author zhaona
- * @create 2018/7/26 下午2:56
  */
 public class ConvertRDDExamples {
 

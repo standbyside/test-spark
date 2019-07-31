@@ -13,9 +13,6 @@ import java.util.Map;
 
 /**
  * 常见的转化操作和行动操作.
- *
- * @author zhaona
- * @create 2018/7/21 下午3:21
  */
 public class OperateRDDExamples {
 

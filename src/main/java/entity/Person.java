@@ -8,10 +8,6 @@ import lombok.ToString;
 
 import java.io.Serializable;
 
-/**
- * @author zhaona
- * @create 2018/7/26 下午4:24
- */
 @Data
 @ToString
 @Builder

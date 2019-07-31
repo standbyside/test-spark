@@ -4,11 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import entity.Person;
+import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SQLContext;
 import scala.Tuple2;
 import util.ExampleDataUtils;
 import util.SparkUtils;
@@ -18,20 +22,18 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.UUID;
 
 /**
  * 数据读取与保存.
- *
- * @author zhaona
- * @create 2018/7/26 下午3:55
  */
 public class DataSourceExamples {
 
   private static JavaSparkContext sc = SparkUtils.getJavaSparkContext();
 
   public static void main(String[] args) {
-    writeObject();
+    readMySQL();
   }
 
   /**
@@ -70,7 +72,8 @@ public class DataSourceExamples {
    */
   public static void writeTextFile() {
     JavaRDD<String> rdd = sc.parallelize(Arrays.asList("test1", "test2", "test3"));
-    rdd.saveAsTextFile(ExampleDataUtils.OUTPUT_FOLDER + "/spark-save-file-test/" + UUID.randomUUID().toString());
+    rdd.saveAsTextFile(ExampleDataUtils.OUTPUT_FOLDER + "/spark-save-file-test/"
+                           + UUID.randomUUID().toString());
     System.out.println("--------------write text file--------------");
   }
 
@@ -112,7 +115,8 @@ public class DataSourceExamples {
           return lines.iterator();
         }
     );
-    output.saveAsTextFile(ExampleDataUtils.OUTPUT_FOLDER + "/spark-save-json-test/" + UUID.randomUUID().toString());
+    output.saveAsTextFile(ExampleDataUtils.OUTPUT_FOLDER + "/spark-save-json-test/"
+                              + UUID.randomUUID().toString());
     System.out.println("--------------write json--------------");
   }
 
@@ -125,8 +129,9 @@ public class DataSourceExamples {
    */
   public static void readCSV1() {
     JavaRDD<String> input1 = sc.textFile(ExampleDataUtils.INPUT_FOLDER + "/persons-info.csv");
-    JavaRDD<String[]> csv1 = input1.map((Function<String, String[]>) line ->
-        new CSVReader(new StringReader(line)).readNext());
+    JavaRDD<String[]> csv1 = input1.map(
+        (Function<String, String[]>) line -> new CSVReader(new StringReader(line)).readNext()
+    );
     System.out.println("--------------read csv 1--------------");
     SparkUtils.printRDD(csv1);
   }
@@ -136,9 +141,12 @@ public class DataSourceExamples {
    * 如果每个文件都很大，读取和解析的过程可能会成为性能瓶颈.
    */
   public static void readCSV2() {
-    JavaPairRDD<String, String> input2 = sc.wholeTextFiles(ExampleDataUtils.INPUT_FOLDER + "/persons-csv");
-    JavaRDD<String[]> csv2 = input2.flatMap((FlatMapFunction<Tuple2<String, String>, String[]>) file ->
-        new CSVReader(new StringReader(file._2())).readAll().iterator()
+    JavaPairRDD<String, String> input2 = sc.wholeTextFiles(
+        ExampleDataUtils.INPUT_FOLDER + "/persons-csv"
+    );
+    JavaRDD<String[]> csv2 = input2.flatMap(
+        (FlatMapFunction<Tuple2<String, String>, String[]>) file ->
+           new CSVReader(new StringReader(file._2())).readAll().iterator()
     );
     System.out.println("--------------read csv 2--------------");
     SparkUtils.printRDD(csv2);
@@ -156,7 +164,8 @@ public class DataSourceExamples {
       cw.close();
       return sw.toString();
     })
-    .saveAsTextFile(ExampleDataUtils.OUTPUT_FOLDER + "/spark-save-csv-test/" + UUID.randomUUID().toString());
+        .saveAsTextFile(ExampleDataUtils.OUTPUT_FOLDER + "/spark-save-csv-test/"
+                            + UUID.randomUUID().toString());
     System.out.println("--------------write csv--------------");
   }
 
@@ -170,8 +179,31 @@ public class DataSourceExamples {
 
   public static void writeObject() {
     JavaRDD<Person> rdd = ExampleDataUtils.getPersonJavaRDD();
-    rdd.saveAsObjectFile(ExampleDataUtils.OUTPUT_FOLDER + "/spark-save-object-test/" + UUID.randomUUID().toString());
+    rdd.saveAsObjectFile(ExampleDataUtils.OUTPUT_FOLDER + "/spark-save-object-test/"
+                             + UUID.randomUUID().toString());
     System.out.println("--------------write object--------------");
   }
 
+  /**
+   * ----数据库--------------------------------------------------------
+   */
+  public static void readMySQL() {
+    JavaSparkContext sparkContext = SparkUtils.getJavaSparkContext();
+    SQLContext sqlContext = new SQLContext(sparkContext);
+
+    Properties connectionProperties = new Properties();
+    connectionProperties.put("user", "root");
+    connectionProperties.put("password", "root1234");
+    connectionProperties.put("driver", "com.mysql.jdbc.Driver");
+
+    // 读取表中所有数据
+    Dataset<Row> jdbcDF = sqlContext.read().jdbc(
+        "jdbc:mysql://localhost:3306/mytest", "t_dict", connectionProperties
+    ).select("*");
+    // 显示数据
+    jdbcDF.show();
+
+    // 停止SparkContext
+    sparkContext.stop();
+  }
 }

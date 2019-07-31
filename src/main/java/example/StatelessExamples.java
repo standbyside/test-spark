@@ -8,9 +8,6 @@ import util.ExampleDataUtils;
 
 /**
  * Spark Streaming 无状态转化操作.
- *
- * @author zhaona
- * @create 2018/8/9 下午4:35
  */
 public class StatelessExamples {
 

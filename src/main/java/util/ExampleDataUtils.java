@@ -20,10 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/**
- * @author zhaona
- * @create 2018/7/26 下午3:20
- */
 public class ExampleDataUtils {
 
   public static final String INPUT_FOLDER = "src/main/resources/input-files";

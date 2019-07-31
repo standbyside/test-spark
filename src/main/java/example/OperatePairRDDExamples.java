@@ -19,9 +19,6 @@ import java.util.Map;
 
 /**
  * 键值对操作.
- *
- * @author zhaona
- * @create 2018/7/21 下午2:26
  */
 public class OperatePairRDDExamples {
 

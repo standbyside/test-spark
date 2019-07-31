@@ -14,10 +14,6 @@ import org.apache.spark.streaming.Durations;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @author zhaona
- * @create 2018/7/21 下午2:35
- */
 public class SparkUtils {
 
   static {

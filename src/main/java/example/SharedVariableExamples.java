@@ -8,10 +8,6 @@ import org.apache.spark.util.LongAccumulator;
 import util.SparkUtils;
 
 
-/**
- * @author zhaona
- * @create 2018/7/27 下午5:02
- */
 public class SharedVariableExamples {
 
   private static JavaSparkContext sc = SparkUtils.getJavaSparkContext();

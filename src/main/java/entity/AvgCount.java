@@ -9,9 +9,6 @@ import java.io.Serializable;
 
 /**
  * 计算平均值.
- *
- * @author zhaona
- * @create 2018/7/24 下午7:35
  */
 @Data
 @ToString

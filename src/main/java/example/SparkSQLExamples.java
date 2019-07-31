@@ -8,11 +8,6 @@ import org.apache.spark.sql.Dataset;
 import util.ExampleDataUtils;
 import util.SparkUtils;
 
-
-/**
- * @author zhaona
- * @create 2018/8/7 下午2:19
- */
 public class SparkSQLExamples {
 
   public static void main(String[] args) {

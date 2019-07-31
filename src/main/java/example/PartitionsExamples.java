@@ -8,9 +8,6 @@ import util.SparkUtils;
  *
  * 基于分区对数据进行操作可以让我们避免为每个数据元素进行重复的配置工作。诸如打开数据库连接或创建随机数生成器等操作。
  * Spark提供基于分区的map和foreach，让部分代码只对RDD的每个分区运行一次，降低这些操作的代价。
- *
- * @author zhaona
- * @create 2018/7/30 下午3:35
  */
 public class PartitionsExamples {
 

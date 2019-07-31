@@ -7,10 +7,6 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import util.ExampleDataUtils;
 import util.SparkUtils;
 
-/**
- * @author zhaona
- * @create 2018/8/9 上午10:22
- */
 public class SparkStreamingExamples {
 
   public static void main(String[] args) {

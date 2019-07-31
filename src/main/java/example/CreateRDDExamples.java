@@ -12,9 +12,6 @@ import util.SparkUtils;
 
 /**
  * 创建RDD.
- *
- * @author zhaona
- * @create 2018/7/21 下午2:32
  */
 public class CreateRDDExamples {
 

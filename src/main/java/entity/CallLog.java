@@ -10,9 +10,6 @@ import java.io.Serializable;
 
 /**
  * 呼叫日志.
- *
- * @author zhaona
- * @create 2018/7/26 下午4:24
  */
 @Data
 @ToString
